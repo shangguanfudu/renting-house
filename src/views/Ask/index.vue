@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <router-view />
-  </div>
+<div>
+    ask
+</div>
 </template>
 
 <script>
@@ -16,7 +16,5 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  padding-bottom: 200px;
-}
+
 </style>

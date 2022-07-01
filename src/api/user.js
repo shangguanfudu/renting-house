@@ -1,0 +1,50 @@
+import request from '@/utils/request'
+
+// 登录
+export const loginUp = ({ username, password }) => {
+  return request({
+    method: 'POST',
+    url: '/user/login',
+    data: { username, password }
+  })
+}
+// 获取用户信息
+export const getInfo = () => {
+  return request({
+    url: '/user'
+  })
+}
+// 发布房源
+export const pubHouse = (data) => {
+  return request({
+    method: 'POST',
+    url: '/user/house',
+    data
+  })
+}
+// 获取已发布房源
+export const getHouse = () => {
+  return request({
+    url: '/user/houses'
+  })
+}
+// 房屋是否收藏
+export const isFav = (id) => {
+  return request({
+    url: `/user/favorites/${id}`
+  })
+}
+// 添加收藏
+export const addFav = (id) => {
+  return request({
+    method: 'POST',
+    url: `/user/favorites/${id}`
+  })
+}
+// 删除收藏
+export const delFav = (id) => {
+  return request({
+    method: 'DELETE',
+    url: `/user/favorites/${id}`
+  })
+}

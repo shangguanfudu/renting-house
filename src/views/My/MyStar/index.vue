@@ -1,22 +1,23 @@
 <template>
-  <div class="container">
-    <router-view />
-  </div>
+<div>
+    <MyHeader name="收藏列表"></MyHeader>
+</div>
 </template>
 
 <script>
 export default {
+  created () {},
   data () {
     return {}
   },
   methods: {},
   computed: {},
+  watch: {},
+  filters: {},
   components: {}
 }
 </script>
 
-<style scoped>
-.container {
-  padding-bottom: 200px;
-}
+<style scoped lang='less'>
+
 </style>
