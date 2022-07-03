@@ -2,7 +2,7 @@
   <div class="container">
     <!-- 头部 -->
     <div class="header">
-      <van-icon name="arrow-left" @click="$router.go('-1')" />
+      <van-icon name="arrow-left" @click="$router.push({ name: 'home' })" />
       <div class="search">
         <MySearch></MySearch>
       </div>
@@ -143,21 +143,6 @@
             </div>
           </div>
         </van-popup>
-        <!-- <van-cell center title="包邮">
-          <template #right-icon>
-            <van-switch v-model="switch1" size="24" active-color="#ee0a24" />
-          </template>
-        </van-cell>
-        <van-cell center title="团购">
-          <template #right-icon>
-            <van-switch v-model="switch2" size="24" active-color="#ee0a24" />
-          </template>
-        </van-cell> -->
-        <!-- <div style="padding: 5px 16px">
-          <van-button type="danger" block round @click="onConfirm">
-            确认
-          </van-button>
-        </div> -->
       </van-dropdown-item>
     </van-dropdown-menu>
     <!-- 房屋列表 -->
@@ -186,6 +171,8 @@ export default {
     return {
       houseList: [],
       areaList: [],
+      areaVal: 'null',
+      subwayVal: 'null',
       cityValue: '',
       isMenuShow: false,
       isPopShow: false,
@@ -228,41 +215,23 @@ export default {
         { text: '5000 - 7000', value: 'PRICE|7000' },
         { text: '7000以上', value: 'PRICE|100001' }
 
-      ],
-      columns: [
-        {
-          text: '浙江',
-          children: [
-            {
-              text: '杭州',
-              children: [{ text: '西湖区' }, { text: '余杭区' }]
-            },
-            {
-              text: '温州',
-              children: [{ text: '鹿城区' }, { text: '瓯海区' }]
-            }
-          ]
-        },
-        {
-          text: '福建',
-          children: [
-            {
-              text: '福州',
-              children: [{ text: '鼓楼区' }, { text: '台江区' }]
-            },
-            {
-              text: '厦门',
-              children: [{ text: '思明区' }, { text: '海沧区' }]
-            }
-          ]
-        }
       ]
     }
   },
   methods: {
     Confirm (value, index) {
       this.isMenuShow = false
-      this.$toast(`当前值：${value}, 当前索引：${index}`)
+      // console.log(value)
+      // console.log(index)
+      // this.findValue(this.areaList, value[value.length - 1])
+      // console.log(val)
+      // this.$toast(`当前值：${value}, 当前索引：${index}`)
+      if (index[0] === 0) {
+        this.areaVal = this.areaList[index[0]].children[index[1]].children[index[2]].value || 'null'
+      } else {
+        this.subwayVal = this.areaList[index[0]].children[index[1]].children[index[2]].value || 'null'
+      }
+      this.getList()
     },
     onCancel () {
       this.isMenuShow = false
@@ -284,6 +253,8 @@ export default {
       try {
         const { data: res } = await checkHouse({
           cityId: this.cityValue,
+          area: this.areaVal,
+          subway: this.subwayVal,
           rentType: this.value2,
           price: this.value3,
           more: this.moreStr,
@@ -313,6 +284,25 @@ export default {
     },
     moreCancel () {
       this.roomTypeRes = this.orientedRes = this.floorRes = this.moreRes = []
+    },
+    // 处理级联数据(多层children子集嵌套要求深度一致)
+    handleDeepData (source) {
+      source.forEach((item) => {
+        if (item.children) {
+          // 如果存在children键名,则递归调用
+          this.handleDeepData(item.children)
+        } else {
+          // 如果不存在 设置空的children
+          // 级联选择的数据嵌套深度+1
+          (item.children = [{ text: '' }])
+        }
+      })
+    },
+    sloveObj (obj) {
+      obj.text = obj.label
+      if (obj.children) {
+        obj.children.forEach(item => this.sloveObj(item))
+      }
     }
   },
   computed: {
@@ -337,8 +327,17 @@ export default {
       async handler () {
         try {
           const { data: res } = await getConditions(this.cityValue)
-          console.log(res)
-          this.areaList = res.body.area.children
+          // console.log(res)
+          const area = res.body.area
+          this.handleDeepData(area.children)
+          this.sloveObj(area)
+
+          const subway = res.body.subway
+          this.handleDeepData(subway.children)
+          this.sloveObj(subway)
+
+          this.areaList.push(area)
+          this.areaList.push(subway)
         } catch (error) {
           console.log(error)
         }

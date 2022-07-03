@@ -1,6 +1,8 @@
 <template>
   <div class="con">
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
 
     <van-tabbar route>
       <van-tabbar-item replace to="/layout/home" icon="home-o">首页</van-tabbar-item>
