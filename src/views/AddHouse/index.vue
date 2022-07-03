@@ -116,10 +116,14 @@
           <van-checkbox-group v-model="equip" direction="horizontal">
             <van-checkbox name="衣柜" shape="square" checked-color="#21b97a">
               <template #icon="props">
-                <img
+                <i
+                  class="iconfont"
+                  :class="props.checked ? 'icon-yigui green' : 'icon-yigui '"
+                ></i>
+                <!-- <img
                   class="img-icon"
                   :src="props.checked ? closet.activeIcon : closet.inactiveIcon"
-                />
+                /> -->
               </template>
               <template #default>
                 <p>衣柜</p>
@@ -127,84 +131,92 @@
             </van-checkbox>
             <van-checkbox name="洗衣机" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="props.checked ? wash.activeIcon : wash.inactiveIcon"
-                />
+                <i
+                  class="iconfont"
+                  :class="props.checked ? 'icon-xiyiji  green' : 'icon-xiyiji'"
+                ></i>
               </template>
               洗衣机
             </van-checkbox>
             <van-checkbox name="空调" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="props.checked ? air.activeIcon : air.inactiveIcon"
-                />
+                <i
+                  class="iconfont"
+                  :class="
+                    props.checked ? 'icon-kongtiao green' : 'icon-kongtiao'
+                  "
+                ></i>
               </template>
               空调
             </van-checkbox>
             <van-checkbox name="天然气" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="props.checked ? gas.activeIcon : gas.inactiveIcon"
-                />
+                <i
+                  class="iconfont"
+                  :class="
+                    props.checked
+                      ? 'icon-meiqitianranqi green'
+                      : 'icon-meiqitianranqi'
+                  "
+                ></i>
               </template>
               天然气
             </van-checkbox>
             <van-checkbox name="冰箱" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="props.checked ? cold.activeIcon : cold.inactiveIcon"
-                />
+                <i
+                  class="iconfont"
+                  :class="
+                    props.checked ? 'icon-bingxiang green' : 'icon-bingxiang'
+                  "
+                ></i>
               </template>
               冰箱
             </van-checkbox>
             <van-checkbox name="暖气" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="props.checked ? hot.activeIcon : hot.inactiveIcon"
-                />
+                <i
+                  class="iconfont"
+                  :class="props.checked ? 'icon-yuba green' : 'icon-yuba'"
+                ></i>
               </template>
               暖气
             </van-checkbox>
             <van-checkbox name="电视" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="props.checked ? tv.activeIcon : tv.inactiveIcon"
-                />
+                <i
+                  class="iconfont"
+                  :class="props.checked ? 'icon-dianshi green' : 'icon-dianshi'"
+                ></i>
               </template>
               电视
             </van-checkbox>
             <van-checkbox name="热水器" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="
-                    props.checked ? hotWater.activeIcon : hotWater.inactiveIcon
+                <i
+                  class="iconfont"
+                  :class="
+                    props.checked ? 'icon-reshuiqi green' : 'icon-reshuiqi'
                   "
-                />
+                ></i>
               </template>
               热水器
             </van-checkbox>
             <van-checkbox name="宽带" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="props.checked ? wifi.activeIcon : wifi.inactiveIcon"
-                />
+                <i
+                  class="iconfont"
+                  :class="props.checked ? 'icon-wifi green' : 'icon-wifi'"
+                ></i>
               </template>
               宽带
             </van-checkbox>
             <van-checkbox name="沙发" shape="square">
               <template #icon="props">
-                <img
-                  class="img-icon"
-                  :src="props.checked ? soft.activeIcon : soft.inactiveIcon"
-                />
+                <i
+                  class="iconfont"
+                  :class="props.checked ? 'icon-canyi green' : 'icon-canyi'"
+                ></i>
               </template>
               沙发
             </van-checkbox>
@@ -240,7 +252,7 @@ export default {
       size: '',
       houseStyle: {
         value: '',
-        columns: ['一室', '两室', '三室', '四室', '四室以上'],
+        columns: ['一室', '二室', '三室', '四室', '四室以上'],
         showPicker: false
       },
       floor: {
@@ -257,64 +269,36 @@ export default {
       uploader: [],
       equip: [],
       message: '',
-      checked: true,
-      closet: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      wash: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      air: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      gas: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      cold: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      hot: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      tv: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      hotWater: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      wifi: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      },
-      soft: {
-        activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
-        inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
-      }
+      checked: true
+      // closet: {
+      //   activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
+      //   inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
+      // },
 
     }
   },
   methods: {
     async onSubmit () {
       try {
+        // console.log(this.uploader)
         const data = {
           title: this.title,
           description: this.message,
-          houseImg: this.uploader[0].content,
-          oriented: 'ORIEN|141b98bf-1ad0-11e3',
+          houseImg: '/uploads/upload_8ae231e774017d5e89ed19a273303f21.jpg',
+          oriented: this.switchOrient,
           supporting: this.equip.join('|'),
           price: this.price,
-          roomType: 'ROOM|ce2a5daa-811d-2f49',
+          roomType: this.switchRoom,
           size: this.size,
           floor: `FLOOR|${this.floor.value === '高楼层' ? '1' : this.floor.value === '中楼层' ? '2' : '3'}`,
-          community: this.commityName.community
+          community: this.commityName.community,
+          tempSlides: [
+            {
+              file: {},
+              orientation: 1,
+              url: this.uploader[0].content
+            }
+          ]
         }
         const { data: res } = await pubHouse(data)
         console.log(res)
@@ -342,7 +326,45 @@ export default {
     }
   },
   computed: {
-    ...mapState(['commityName'])
+    ...mapState(['commityName']),
+    switchOrient () {
+      let res = ''
+      switch (this.orient.value) {
+        case '东': res = 'ORIEN|141b98bf-1ad0-11e3'
+          break
+        case '南': res = 'ORIEN|61e99445-e95e-7f37'
+          break
+        case '西': res = 'ORIEN|103fb3aa-e8b4-de0e'
+          break
+        case '北': res = 'ORIEN|caa6f80b-b764-c2df'
+          break
+        case '东南': res = 'ORIEN|dfb1b36b-e0d1-0977'
+          break
+        case '东北': res = 'ORIEN|67ac2205-7e0f-c057'
+          break
+        case '西南': res = 'ORIEN|2354e89e-3918-9cef'
+          break
+        case '西北': res = 'ORIEN|80795f1a-e32f-feb9'
+          break
+      }
+      return res
+    },
+    switchRoom () {
+      let res = ''
+      switch (this.houseStyle.value) {
+        case '一室': res = 'ROOM|d4a692e4-a177-37fd'
+          break
+        case '二室': res = 'ROOM|d1a00384-5801-d5cd'
+          break
+        case '三室': res = 'ROOM|20903ae0-c7bc-f2e2'
+          break
+        case '四室': res = 'ROOM|ce2a5daa-811d-2f49'
+          break
+        case '四室以上': res = 'ROOM|2731c38c-5b19-ff7f'
+          break
+      }
+      return res
+    }
   },
   watch: {},
   filters: {},
@@ -372,5 +394,23 @@ h5 {
 }
 .img-icon {
   height: 48px;
+}
+.van-cell {
+  display: flex;
+  .van-checkbox {
+    flex: 15%;
+    display: flex;
+    flex-direction: column;
+
+    /deep/ span {
+      margin: 10px;
+    }
+    i {
+      font-size: 48px;
+    }
+    .green {
+      color: #61c07a;
+    }
+  }
 }
 </style>

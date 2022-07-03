@@ -18,8 +18,10 @@ export const getInfo = () => {
 export const pubHouse = (data) => {
   return request({
     method: 'POST',
-    url: '/user/house',
-    data
+    url: '/user/houses',
+    data: {
+      body: data
+    }
   })
 }
 // 获取已发布房源
@@ -46,5 +48,11 @@ export const delFav = (id) => {
   return request({
     method: 'DELETE',
     url: `/user/favorites/${id}`
+  })
+}
+// 查看收藏列表
+export const getFav = () => {
+  return request({
+    url: '/user/favorites'
   })
 }

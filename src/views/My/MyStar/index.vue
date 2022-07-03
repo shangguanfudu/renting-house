@@ -1,14 +1,26 @@
 <template>
-<div>
+  <div>
     <MyHeader name="收藏列表"></MyHeader>
-</div>
+    <MyHouse :houseList="list"></MyHouse>
+  </div>
 </template>
 
 <script>
+import { getFav } from '@/api/user'
 export default {
-  created () {},
+  async created () {
+    try {
+      const { data: res } = await getFav()
+      // console.log(res)
+      this.list = res.body
+    } catch (error) {
+      console.log(error)
+    }
+  },
   data () {
-    return {}
+    return {
+      list: []
+    }
   },
   methods: {},
   computed: {},
@@ -19,5 +31,4 @@ export default {
 </script>
 
 <style scoped lang='less'>
-
 </style>

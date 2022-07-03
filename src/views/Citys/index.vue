@@ -18,10 +18,10 @@
           $router.go('-1');
         "
       />
-      <div v-for="(item, ind) in list" :key="ind">
+      <div v-for="item in list" :key="item">
         <van-index-anchor :index="item">{{ item }} </van-index-anchor>
         <van-cell
-          v-for="(items, index) in B"
+          v-for="(items, index) in upList[item]"
           :key="index"
           :title="items.label"
           @click="
@@ -45,21 +45,46 @@ export default {
     this.hotCitys = result.body
 
     const { data: res } = await getCitys({ level: 1 })
-    console.log(res.body)
-
-    this.cityList = res.body
-
-    this.B = this.cityList.filter(item => item.short[0].toUpperCase() === 'B')
+    // console.log(res.body)
+    for (let i = 0; i < this.list.length; i++) {
+      this.upList[this.list[i]] = res.body.filter(item => item.short[0].toUpperCase() === this.list[i])
+    }
+    // this.upList.B = this.cityList.filter(item => item.short[0].toUpperCase() === 'B')
   },
   data () {
     return {
-      cityList: [],
       cityNames: [],
       hotCitys: [],
       indexList: ['#', '热', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
       list: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
-      A: [],
-      B: []
+      upList: {
+        A: [],
+        B: [],
+        C: [],
+        D: [],
+        E: [],
+        F: [],
+        G: [],
+        H: [],
+        I: [],
+        J: [],
+        K: [],
+        L: [],
+        M: [],
+        N: [],
+        O: [],
+        P: [],
+        Q: [],
+        R: [],
+        S: [],
+        T: [],
+        U: [],
+        V: [],
+        W: [],
+        X: [],
+        Y: [],
+        Z: []
+      }
     }
   },
   methods: {

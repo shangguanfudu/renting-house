@@ -29,30 +29,42 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import { getCom } from '@/api/area'
+import { watchCity } from '@/function'
+let timer = null
 export default {
+  name: 'Commity',
   created () {
 
   },
   data () {
     return {
       areaName: '',
-      commityList: []
+      commityList: [],
+      cityValue: ''
     }
   },
   methods: {
     ...mapMutations(['COMMITY']),
     async onSearch () {
-      try {
-        const { data: res } = await getCom({ name: this.areaName, id: 'AREA|88cff55c-aaa4-e2e0' })
-        // console.log(res)
-        this.commityList = res.body
-      } catch (err) {
-        console.log(err)
+      if (this.timer) {
+        clearTimeout(timer)
       }
+      timer = setTimeout(async () => {
+        try {
+          const { data: res } = await getCom({ name: this.areaName, id: this.cityValue })
+          // console.log(res)
+          this.commityList = res.body
+        } catch (err) {
+          console.log(err)
+        }
+      }, 700)
     }
+
   },
   computed: { ...mapState(['commityName', 'currentCity']) },
-  watch: {},
+  watch: {
+    ...watchCity
+  },
   filters: {},
   components: {}
 }

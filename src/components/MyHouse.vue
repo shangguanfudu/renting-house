@@ -1,11 +1,14 @@
 <template>
   <van-grid :column-num="1" direction="horizontal" v-if="houseList.length >= 1">
     <van-grid-item
-      icon="photo-o"
       text="文字"
       v-for="(obj, ind) in houseList"
       :key="ind"
       class="van-hairline--bottom"
+      @click="$router.push({
+          name:'detail',
+          params: {id:obj.houseCode}
+          })"
     >
       <template #icon>
         <van-image
@@ -77,7 +80,8 @@ export default {
   }
   span {
     display: block;
-    width: 92px;
+    width: 123px;
+    text-align: center;
     height: 40px;
     color: #39becd;
     background-color: #e1f5f8;

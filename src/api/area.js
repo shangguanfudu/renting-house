@@ -23,7 +23,7 @@ export const getCom = ({ name, id }) => {
 // 根据城市名称获取城市id
 export const getCityValue = (name) => {
   return request({
-    url: '/area/community',
+    url: '/area/info',
     params: {
       name
     }

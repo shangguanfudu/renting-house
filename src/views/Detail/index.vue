@@ -60,9 +60,12 @@
           <van-grid-item
             v-for="value in detail.supporting"
             :key="value"
-            icon="photo-o"
             :text="value"
-          />
+          >
+            <template #icon>
+              <i class="iconfont" :class="iClass(value)"></i>
+            </template>
+          </van-grid-item>
         </van-grid>
       </div>
     </div>
@@ -198,9 +201,24 @@ export default {
       } else {
         await delFav(this.id)
       }
+    },
+    iClass (val) {
+      switch (val) {
+        case '空调': return 'icon-kongtiao'
+        case '电视': return 'icon-dianshi'
+        case '衣柜': return 'icon-yigui'
+        case '沙发': return 'icon-canyi'
+        case '宽带': return 'icon-wifi'
+        case '洗衣机': return 'icon-xiyiji'
+        case '冰箱': return 'icon-bingxiang'
+        case '暖气': return 'icon-yuba'
+        case '热水器': return 'icon-reshuiqi'
+        case '天然气': return 'icon-meiqitianranqi'
+      }
     }
   },
-  computed: {},
+  computed: {
+  },
   watch: {},
   filters: {},
   components: {}
@@ -292,6 +310,9 @@ export default {
     // background-color: #ccc;
     /deep/ .van-grid-item__content {
       padding: 16px 8px;
+    }
+    i {
+      font-size: 48px;
     }
   }
 }
