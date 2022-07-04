@@ -1,12 +1,16 @@
 <template>
   <div>
     <MyHeader :name="detail.community"></MyHeader>
-
-    <van-image
+    <van-swipe :autoplay="3000">
+      <van-swipe-item v-for="(image, index) in images" :key="index">
+        <img v-lazy="image" />
+      </van-swipe-item>
+    </van-swipe>
+    <!-- <van-image
       :src="'http://liufusong.top:8080' + detail.houseImg"
       width="100%"
       height="252"
-    ></van-image>
+    ></van-image> -->
     <!-- 房屋细节 -->
     <div class="house-detail">
       <div class="top">
@@ -50,7 +54,21 @@
     <!-- 地图 -->
     <div class="map">
       <div class="title">小区: {{ detail.community }}</div>
-      <div class="main"></div>
+      <div class="main">
+        <div
+          id="map-con"
+          class="BMap_mask"
+          style="
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            overflow: hidden;
+            user-select: none;
+            width: 375px;
+            height: 145px;
+          "
+        ></div>
+      </div>
     </div>
     <!-- 房屋设备 -->
     <div class="equip">
@@ -163,7 +181,9 @@ export default {
         houseCode: '5cc46ab31439630e5b439daf'
       }],
       detail: {},
-      isFavorite: false
+      isFavorite: false,
+      coord: {},
+      images: []
     }
   },
   methods: {
@@ -173,13 +193,36 @@ export default {
         const { data: res } = await getDetail(this.id)
         // console.log(res)
         this.detail = res.body
-        this.detail.tags = this.detail.tags[0]
-        this.detail.oriented = this.detail.oriented[0]
-        this.detail.houseImg = this.detail.houseImg[0]
+        // console.log(res.body)
+        this.coord = res.body.coord
+        this.detail.tags = this.detail.tags.join(',')
+        this.detail.oriented = this.detail.oriented.join(',')
+        // console.log(this.detail.houseImg)
+        this.detail.houseImg.forEach(item => {
+          item = 'http://liufusong.top:8080' + item
+          this.images.push(item)
+        })
+        // this.detail.houseImg = this.detail.houseImg.join(',')
         // 根据id猜你喜欢
         const { data: result } = await checkIf()
         // console.log(result)
         this.list = result.body.list.splice(0, 3)
+        // 地图
+        this.$nextTick(() => {
+          const { BMapGL } = window
+          const map = new BMapGL.Map('map-con')
+          // 创建地图实例
+          const point = new BMapGL.Point(this.coord.longitude, this.coord.latitude)
+          // 创建点坐标 设置中心点坐标和地图级别
+          map.centerAndZoom(point, 15)
+          // 初始化地图，设置中心点坐标和地图级别
+          map.centerAndZoom(new BMapGL.Point(this.coord.longitude, this.coord.latitude), 15)
+          map.enableScrollWheelZoom(true)
+          // 创建点标记
+          const marker1 = new BMapGL.Marker(new BMapGL.Point(this.coord.longitude, this.coord.latitude))
+          // 在地图上添加点标记
+          map.addOverlay(marker1)
+        })
       } catch (error) {
         console.log(error)
       }
@@ -194,6 +237,7 @@ export default {
         console.log(error)
       }
     },
+    // 切换收藏
     async changeFav () {
       this.isFavorite = !this.isFavorite
       if (this.isFavorite) {
@@ -221,7 +265,9 @@ export default {
   },
   watch: {},
   filters: {},
-  components: {}
+  components: {},
+  mounted () {
+  }
 }
 </script>
 
@@ -295,12 +341,17 @@ export default {
     height: 88px;
     line-height: 88px;
     width: 100%;
+    cursor: url(http://api.map.baidu.com/images/openhand.cur) 8 8, default
     // background-color: pink;
   }
   .main {
+    position: relative;
     width: 100%;
     height: 290px;
-    background-color: #e2e7ed;
+    // background-color: #e2e7ed;
+    .BMap_mask {
+    background: transparent url(//webmap0.bdimg.com/image/api/blank.gif);
+}
   }
 }
 .equip {

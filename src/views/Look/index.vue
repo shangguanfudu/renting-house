@@ -285,23 +285,27 @@ export default {
     moreCancel () {
       this.roomTypeRes = this.orientedRes = this.floorRes = this.moreRes = []
     },
-    // 处理级联数据(多层children子集嵌套要求深度一致)
-    handleDeepData (source) {
-      source.forEach((item) => {
-        if (item.children) {
-          // 如果存在children键名,则递归调用
-          this.handleDeepData(item.children)
-        } else {
-          // 如果不存在 设置空的children
-          // 级联选择的数据嵌套深度+1
-          (item.children = [{ text: '' }])
-        }
-      })
-    },
+    // // 处理级联数据(多层children子集嵌套要求深度一致)
+    // handleDeepData (source) {
+    //   source.forEach((item) => {
+    //     if (item.children) {
+    //       // 如果存在children键名,则递归调用
+    //       this.handleDeepData(item.children)
+    //     } else {
+    //       // 如果不存在 设置空的children
+    //       // 级联选择的数据嵌套深度+1
+    //       (item.children = [{ text: '' }])
+    //     }
+    //   })
+    // },
     sloveObj (obj) {
       obj.text = obj.label
       if (obj.children) {
         obj.children.forEach(item => this.sloveObj(item))
+      } else {
+        // 如果不存在 设置空的children
+        // 级联选择的数据嵌套深度+1
+        obj.children = [{ text: '' }]
       }
     }
   },
@@ -329,11 +333,11 @@ export default {
           const { data: res } = await getConditions(this.cityValue)
           // console.log(res)
           const area = res.body.area
-          this.handleDeepData(area.children)
+          // this.handleDeepData(area.children)
           this.sloveObj(area)
 
           const subway = res.body.subway
-          this.handleDeepData(subway.children)
+          // this.handleDeepData(subway.children)
           this.sloveObj(subway)
 
           this.areaList.push(area)

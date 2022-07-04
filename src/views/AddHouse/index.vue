@@ -106,7 +106,7 @@
       <p class="tit">房屋图像</p>
       <van-field name="uploader">
         <template #input>
-          <van-uploader v-model="uploader" />
+          <van-uploader v-model="uploader" :after-read="afterRead" />
         </template>
       </van-field>
       <!-- 房屋配置 -->
@@ -243,6 +243,7 @@
 <script>
 import { mapState } from 'vuex'
 import { pubHouse } from '@/api/user'
+import { publishImg } from '@/api/house'
 export default {
   created () { },
   data () {
@@ -269,7 +270,8 @@ export default {
       uploader: [],
       equip: [],
       message: '',
-      checked: true
+      checked: true,
+      files: []
       // closet: {
       //   activeIcon: 'https://img01.yzcdn.cn/vant/user-active.png',
       //   inactiveIcon: 'https://img01.yzcdn.cn/vant/user-inactive.png'
@@ -278,32 +280,49 @@ export default {
     }
   },
   methods: {
+    async afterRead (upload) {
+      const form = new FormData()
+      form.append('file', upload.file)
+      try {
+        const { data: res } = await publishImg(form)
+        // console.log(res)
+        this.files.push(res.body[0])
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async onSubmit () {
       try {
-        // console.log(this.uploader)
+        // console.log(this.files)
+        if (this.uploader.length === 0) return this.$toast.fail('请上传房屋图片')
         const data = {
           title: this.title,
           description: this.message,
-          houseImg: '/uploads/upload_8ae231e774017d5e89ed19a273303f21.jpg',
+          houseImg: this.files.join('|'),
           oriented: this.switchOrient,
           supporting: this.equip.join('|'),
           price: this.price,
           roomType: this.switchRoom,
           size: this.size,
           floor: `FLOOR|${this.floor.value === '高楼层' ? '1' : this.floor.value === '中楼层' ? '2' : '3'}`,
-          community: this.commityName.community,
-          tempSlides: [
-            {
-              file: {},
-              orientation: 1,
-              url: this.uploader[0].content
-            }
-          ]
+          community: this.commityName.community
         }
-        const { data: res } = await pubHouse(data)
-        console.log(res)
+        await pubHouse(data)
+        // console.log(res)
+        this.$dialog.confirm({
+          title: '发布成功',
+          message: '点击确认前去查看我的房源'
+        })
+          .then(() => {
+            this.$router.push({ name: 'myrent' })
+          })
+          .catch(() => {
+            // 点击取消
+            this.$router.push({ name: 'home' })
+          })
       } catch (e) {
         console.log(e)
+        this.$toast.fail('发布失败')
       }
     },
     houseStyleConfirm (value) {

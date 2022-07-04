@@ -34,3 +34,13 @@ export const getAddConditions = () => {
     url: '/houses/params'
   })
 }
+// 房屋图像上传
+export const publishImg = (file) => {
+  return request({
+    method: 'POST',
+    url: '/houses/image',
+    data:
+      file
+
+  })
+}

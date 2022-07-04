@@ -29,3 +29,12 @@ export const getCityValue = (name) => {
     }
   })
 }
+// 获得地图找房数据
+export const getMap = (id) => {
+  return request({
+    url: '/area/map',
+    params: {
+      id
+    }
+  })
+}

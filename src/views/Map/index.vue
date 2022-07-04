@@ -1,41 +1,61 @@
 <template>
   <div>
     <MyHeader name="地图找房"></MyHeader>
-    <div class="container"></div>
+    <div id="container"></div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { getMap } from '@/api/area'
 // https://lbsyun.baidu.com/jsdemo.htm#eAddMarker
 export default {
-  created () { },
-  mounted () {
-    // const { BMapGL } = window
-    // const map = new BMapGL.Map('container')
-    // // 创建地图实例
-    // const point = new BMapGL.Point(116.404, 39.915)
-    // // 创建点坐标
-    // map.centerAndZoom(point, 15)
-    // // 初始化地图，设置中心点坐标和地图级别
+  async created () {
+    try {
+      const { data: res } = await getMap(this.cityValue)
+      // console.log(res)
+      this.areaList = res.body
+      this.$nextTick(() => {
+        const { BMapGL } = window
+        const map = new BMapGL.Map('container')
+        map.centerAndZoom(this.currentCity + '市', 13) // 初始化地图,设置中心点坐标和地图级别
+        map.enableScrollWheelZoom(true) // 开启鼠标滚轮缩放
 
-    // map.centerAndZoom(new BMapGL.Point(116.404, 39.928), 15)
-    // map.enableScrollWheelZoom(true)
-    // // 创建点标记
-    // const marker1 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.925))
-    // const marker2 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.915))
-    // const marker3 = new BMapGL.Marker(new BMapGL.Point(116.395, 39.935))
-    // const marker4 = new BMapGL.Marker(new BMapGL.Point(116.415, 39.931))
-    // // 在地图上添加点标记
-    // map.addOverlay(marker1)
-    // map.addOverlay(marker2)
-    // map.addOverlay(marker3)
-    // map.addOverlay(marker4)
+        // 创建文本标注
+        this.areaList.forEach((item) => {
+          const label = new BMapGL.Label(`${item.label} \n ${item.count}套`, {
+            position: new BMapGL.Point(item.coord.longitude, item.coord.latitude), // 设置标注的地理位置
+            offset: new BMapGL.Size(10, 20) // 设置标注的偏移量
+          })
+          map.addOverlay(label)
+          label.setStyle({ // 设置label的样式
+            width: ' 70px',
+            height: '70px',
+            lineHeight: '70px',
+            display: 'inline-block',
+            position: 'absolute',
+            borderRadius: '100%',
+            background: ' rgba(12, 181, 106, .9)',
+            color: '#fff',
+            border: ' 2px solid #fff',
+            textAlign: 'center',
+            cursor: ' pointer'
+          })
+        })
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  mounted () {
   },
   data () {
-    return {}
+    return {
+      areaList: []
+    }
   },
   methods: {},
-  computed: {},
+  computed: { ...mapState(['cityValue', 'currentCity']) },
   watch: {},
   filters: {},
   components: {}

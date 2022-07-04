@@ -15,12 +15,32 @@ export const getInfo = () => {
   })
 }
 // 发布房源
-export const pubHouse = (data) => {
+export const pubHouse = ({
+  title,
+  description,
+  houseImg,
+  oriented,
+  supporting,
+  price,
+  roomType,
+  size,
+  floor,
+  community
+}) => {
   return request({
     method: 'POST',
     url: '/user/houses',
     data: {
-      body: data
+      title,
+      description,
+      houseImg,
+      oriented,
+      supporting,
+      price,
+      roomType,
+      size,
+      floor,
+      community
     }
   })
 }
