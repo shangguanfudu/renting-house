@@ -1,16 +1,11 @@
 <template>
   <div>
     <MyHeader :name="detail.community"></MyHeader>
-    <van-swipe :autoplay="3000">
+    <van-swipe width="100%" height="252" :autoplay="3000">
       <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img v-lazy="image" />
+        <img width="100%" height="252" fit="contain" v-lazy="image" />
       </van-swipe-item>
     </van-swipe>
-    <!-- <van-image
-      :src="'http://liufusong.top:8080' + detail.houseImg"
-      width="100%"
-      height="252"
-    ></van-image> -->
     <!-- 房屋细节 -->
     <div class="house-detail">
       <div class="top">
